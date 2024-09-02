@@ -1,0 +1,116 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Student {
+    String name;
+    int id;
+    String department;
+    double gpa;
+
+    Student(String name, int id, String department, double gpa) {
+        this.name = name;
+        this.id = id;
+        this.department = department;
+        this.gpa = gpa;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + name + "\nID: " + id + "\nDepartment: " + department + "\nGPA: " + gpa + "\n";
+    }
+}
+
+class StudentDatabase {
+    ArrayList<Student> students;
+
+    StudentDatabase() {
+        students = new ArrayList<Student>();
+    }
+
+    void addStudent(Student s) {
+        students.add(s);
+    }
+
+    void deleteStudent(int id) {
+        for (int i = 0; i < students.size(); i++) {
+            if (students.get(i).id == id) {
+                students.remove(i);
+                break;
+            }
+        }
+    }
+
+    void updateStudent(int id, String department, double gpa) {
+        for (int i = 0; i < students.size(); i++) {
+            if (students.get(i).id == id) {
+                students.get(i).department = department;
+                students.get(i).gpa = gpa;
+                break;
+            }
+        }
+    }
+
+//    Student getStudent(int id) {
+//        for (int i = 0; i < students.size(); i++) {
+//            if (students.get(i).id == id) {
+//                return students.get(i);
+//            }
+//        }
+//        return null;
+//    }
+
+    void displayAllStudents() {
+        System.out.println("List of all students:");
+        for (int i = 0; i < students.size(); i++) {
+            System.out.println(students.get(i).toString());
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        StudentDatabase db = new StudentDatabase();
+        while (true) {
+            System.out.println("Select an option:");
+            System.out.println("1. Add student");
+            System.out.println("2. Delete student");
+            System.out.println("3. Update student");
+//            System.out.println("4. Get student");
+            System.out.println("4. Display all students");
+            System.out.println("5. Exit");
+            int choice = sc.nextInt();
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter name: ");
+                    String name = sc.next();
+                    System.out.print("Enter id: ");
+                    int id = sc.nextInt();
+                    System.out.print("Enter department: ");
+                    String department = sc.next();
+                    System.out.print("Enter GPA: ");
+                    double gpa = sc.nextDouble();
+                    db.addStudent(new Student(name, id, department, gpa));
+                    break;
+                case 2:
+                    System.out.print("Enter id of student to delete: ");
+                    int deleteId = sc.nextInt();
+                    db.deleteStudent(deleteId);
+                    break;
+                case 3:
+                    System.out.print("Enter id of student to update: ");
+                    int updateId = sc.nextInt();
+                    System.out.print("Enter new department: ");
+                    String newDepartment = sc.next();
+                    System.out.print("Enter new GPA: ");
+                    double newGpa = sc.nextDouble();
+                    db.updateStudent(updateId, newDepartment, newGpa);
+                    break;
+                case 4:
+                    db.displayAllStudents();
+                    break;
+                    case 5:System.exit(0);
+            }
+        }
+    }
+}

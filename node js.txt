@@ -1,0 +1,208 @@
+app.css
+
+body {
+  font-family: Arial, sans-serif;
+  margin-top: 250px;
+  margin-bottom:250px;
+  padding: 0;
+  background-color: #555;
+  background-image: url(https://htmlcolorcodes.com/assets/images/colors/neon-green-color-solid-background-1920x1080.png);
+ 
+  background-size: auto;
+}
+
+/* Header styles */
+
+header {
+  background-color: #333;
+  color: white;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  padding: 0 20px;
+}
+
+header h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+/* Form styles */
+
+form {
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f7f7f7;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+input {
+  font-size: 16px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+button {
+  font-size: 16px;
+  padding: 10px 20px;
+  border: none;
+  background-color: rgb(0, 191, 255);
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: rgb(5, 235, 248);
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Success message styles */
+
+.success {
+  color: green;
+  margin-top: 20px;
+}
+
+/* Error message styles */
+
+.error {
+  color: red;
+  margin-top: 20px;
+}
+
+
+server.js
+
+const express = require("express");
+const db = require("mongoose");
+var cors = require("cors");
+var ObjectId = require("mongodb").ObjectId;
+const app = express();``
+app.use(express.json());
+db.set("strictQuery", false);
+app.use(cors());
+
+//************mongodb connect */
+db.connect("mongodb+srv://Vijayendra:vijayendra@cluster0.bfcm1qq.mongodb.net/test", {
+  useNewURLParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => console.log("MongoDb is connected"))
+  .catch((err) => console.log(err));
+
+var conn = db.connection;
+
+//**************insert data to database */
+
+app.post("/ins", function (req, res) {
+  const fdata = req.body.fdata;
+  conn.collection("Naruto").insertOne(fdata, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("inserted");
+      res.status(202).send("success");
+    }
+  });
+});
+app.listen(4000, () => {
+  console.log("server running at 4000");
+});
+
+
+
+app.js
+
+import React, { useState } from "react";
+import Axios from "axios";
+import "./App.css";
+
+function App() {
+  const [fdata, setFdata] = useState({
+    Name: "",
+    email: "",
+    password: "",
+    date:""
+  });
+  const [msg, setMsg] = useState();
+
+  const changeHandler = (e) => {
+    let name1 = e.target.name;
+    let val = e.target.value;
+    setFdata({ ...fdata, [name1]: val });
+  };
+
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    Axios.post("http://localhost:4000/ins", { fdata }).then((res) => {
+      let ack = res.data;
+      if (ack === "success") {
+        setMsg("Data inserted successfully");
+        console.log(msg);
+        alert("Data inserted successfully");
+      } else {
+        setMsg("Data not inserted");
+        console.log(msg);
+        alert("Data not inserted");
+      }
+    });
+  };
+
+  return (
+    <div className="form">
+  
+      <form onSubmit={submitHandler}>
+        <label>Name:</label>
+        <input
+          type="text"
+          name="Name"
+          value={fdata.Name}
+          onChange={changeHandler}
+        />
+
+        <label>Place:</label>
+        <input
+          type="text"
+          name="email"
+          value={fdata.email}
+          onChange={changeHandler}
+        />
+
+        <label>PC Link:</label>
+        <input
+          type="password"
+          name="password"
+          value={fdata.password}
+          onChange={changeHandler}
+        />
+
+        <input
+          type="date"
+          name="date"
+          value={fdata.date}
+          onChange={changeHandler}
+        />
+
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  );
+}
+
+export default App;

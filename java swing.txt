@@ -1,0 +1,85 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class Main extends JFrame implements ActionListener{
+
+    JLabel l1, l2, l3, l4, l5;
+    JTextField tf1, tf2, tf3, tf4;
+    JButton btn1;
+    JRadioButton r1, r2;
+    ButtonGroup bg;
+
+    Main(){
+
+        setVisible(true);
+        setSize(550, 550);
+        setLayout(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("Student Registration Form");
+
+        l1 = new JLabel("Student Registration Form");
+        l1.setFont(new Font("Arial",Font.PLAIN ,20));
+        l2 = new JLabel("Name:");
+        l3 = new JLabel("Roll No:");
+        l4 = new JLabel("Gender:");
+        l5 = new JLabel("Course:");
+        tf1 = new JTextField();
+        tf2 = new JTextField();
+        r1 = new JRadioButton("Male");
+        r2 = new JRadioButton("Female");
+        btn1 = new JButton("Submit");
+
+        bg = new ButtonGroup();
+        bg.add(r1);
+        bg.add(r2);
+
+        tf4 = new JTextField();
+
+        l1.setBounds(100, 30, 400, 30);
+        l2.setBounds(80, 70, 200, 30);
+        l3.setBounds(80, 110, 200, 30);
+        l4.setBounds(80, 150, 200, 30);
+        l5.setBounds(80, 190, 200, 30);
+        tf1.setBounds(300, 70, 200, 30);
+        tf2.setBounds(300, 110, 200, 30);
+        r1.setBounds(300, 150, 100, 30);
+        r2.setBounds(400, 150, 100, 30);
+        tf4.setBounds(300, 190, 200, 30);
+        btn1.setBounds(150, 250, 100, 30);
+
+        add(l1);
+        add(l2);
+        add(tf1);
+        add(l3);
+        add(tf2);
+        add(l4);
+        add(r1);
+        add(r2);
+        add(l5);
+        add(tf4);
+        add(btn1);
+
+        btn1.addActionListener(this);
+    }
+    public void actionPerformed(ActionEvent e){
+        if (e.getSource() == btn1){
+            String name = tf1.getText();
+            String rollNo = tf2.getText();
+            String gender;
+            if (r1.isSelected()){
+                gender = "Male";
+            }
+            else{
+                gender = "Female";
+            }
+            String course = tf4.getText();
+
+            JOptionPane.showMessageDialog(this, "Name: "+name+"\nRoll No:"+rollNo+"\nGender: "+gender+"\nCourse: "+course);
+        }
+    }
+
+    public static void main(String args[]){
+        new Main();
+    }
+}

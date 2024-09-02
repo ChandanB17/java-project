@@ -1,0 +1,41 @@
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        // Creating a HashMap to store menu items and their prices
+        HashMap<String, Double> menu = new HashMap<>();
+        menu.put("Pizza", 10.99);
+        menu.put("Burger", 5.99);
+        menu.put("Fries", 2.99);
+        menu.put("Salad", 7.99);
+
+        Scanner input = new Scanner(System.in);
+        String order = "";
+        double totalPrice = 0.0;
+
+        // Displaying the menu
+        System.out.println("Menu:");
+        for (String item : menu.keySet()) {
+            System.out.println(item + " - $" + menu.get(item));
+        }
+
+        // Prompting the user to place an order
+        while (!order.equalsIgnoreCase("done")) {
+            System.out.print("Enter an item to order (or 'done' to finish): ");
+            order = input.nextLine();
+            if (menu.containsKey(order)) {
+                totalPrice += menu.get(order);
+                System.out.println(order + " added to order (total price: $" + totalPrice + ")");
+            } else if (!order.equalsIgnoreCase("done")) {
+                System.out.println("Sorry, we don't have that item on the menu.");
+            }
+        }
+
+        // Displaying the total price of the order
+        System.out.println("Thank you for your order! Total price: $" + totalPrice);
+    }
+
+}
